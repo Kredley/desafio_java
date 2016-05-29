@@ -14,8 +14,8 @@ public class CadastroController {
         this.repository = repository;
     }
 
-    @RequestMapping(value = "/teste", method = RequestMethod.GET)
-    ResponseEntity<String> teste() {
-        return new ResponseEntity<String>("Teste", HttpStatus.OK);
+    @RequestMapping(value = "/cadastro", method = RequestMethod.POST)
+    ResponseEntity<Cadastro> cadastrar(@RequestBody Cadastro cad) {
+        return new ResponseEntity<Cadastro>(repository.save(cad), HttpStatus.OK);
     }
 }

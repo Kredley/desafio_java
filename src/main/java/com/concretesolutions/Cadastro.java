@@ -2,10 +2,16 @@ package com.concretesolutions;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Column;
+
 @Entity
 public class Cadastro {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Integer id;
     private String name;
     private String email;
     private String phones; //precisa ser um vetor depois
@@ -19,12 +25,12 @@ public class Cadastro {
 
 
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
