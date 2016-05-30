@@ -1,23 +1,27 @@
 package com.concretesolutions;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Column;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 public class Cadastro {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Integer id;
+    private Long id;
     private String name;
 
     @Column(unique = true)
     private String email;
-    private String phones; //precisa ser um vetor depois
+
+    @OneToMany(mappedBy = "cadastro", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<CadastroPhone> phones = new ArrayList<CadastroPhone>();
 
     private Date created; //precisa ser data
     private Date modified; //precisa ser data
@@ -28,12 +32,12 @@ public class Cadastro {
 
 
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -58,12 +62,12 @@ public class Cadastro {
 	}
 
 
-	public String getPhones() {
+	public List<CadastroPhone> getPhones() {
 		return phones;
 	}
 
 
-	public void setPhones(String phones) {
+	public void setPhones(List<CadastroPhone> phones) {
 		this.phones = phones;
 	}
 
@@ -106,4 +110,21 @@ public class Cadastro {
 	public void setToken(String token) {
 		this.token = token;
 	}
+
+    public void addToCadastroPhone(CadastroPhone phone) {
+        phone.setCadastro(this);
+        this.phones.add(phone);
+    }
+
+
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            return mapper.writeValueAsString(this);
+        }
+        catch (JsonProcessingException e) {
+            return new String().format("{'mensagem': '%s'}", e.getMessage());
+        }
+    }
 }
