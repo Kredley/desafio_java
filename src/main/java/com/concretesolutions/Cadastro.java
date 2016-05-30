@@ -13,6 +13,8 @@ public class Cadastro {
     @Column(name = "id")
     private Integer id;
     private String name;
+
+    @Column(unique = true)
     private String email;
     private String phones; //precisa ser um vetor depois
 
