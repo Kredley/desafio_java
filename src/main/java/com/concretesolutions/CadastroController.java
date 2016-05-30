@@ -22,17 +22,17 @@ public class CadastroController {
     ResponseEntity<String> cadastrar(@RequestBody Cadastro cad) {
         Gson gson = new Gson(); //usa o Gson para converter o objeto Cadastro para JSON
 
-        if (repository.countByEmail(cad.getEmail()) == 1) {
-            // se o email já existir na base, retornar status 409 - Conflict
-            return new ResponseEntity<String>(gson.toJson(new MensagemRetorno("E-mail já existente")), HttpStatus.CONFLICT);
-        }
-        else {
-            // caso não exista, retornar status 200 - OK
+        if (repository.countByEmail(cad.getEmail()) == 0) {
+            // caso o email não exista, retornar status 200 - OK
             Date data_atual = new Date();
             cad.setCreated(data_atual);
             cad.setModified(data_atual);
             cad.setLast_login(data_atual);
             return new ResponseEntity<String>(gson.toJson(repository.save(cad)), HttpStatus.OK);
+        }
+        else {
+            // se o email já existir na base, retornar status 409 - Conflict
+            return new ResponseEntity<String>(gson.toJson(new MensagemRetorno("E-mail já existente")), HttpStatus.CONFLICT);
         }
     }
 }
