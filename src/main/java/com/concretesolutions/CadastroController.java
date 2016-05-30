@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.sql.SQLIntegrityConstraintViolationException;
 import com.google.gson.Gson;
-
+import java.util.Date;
 
 
 @RestController
@@ -28,6 +28,10 @@ public class CadastroController {
         }
         else {
             // caso não exista, retornar status 200 - OK
+            Date data_atual = new Date();
+            cad.setCreated(data_atual);
+            cad.setModified(data_atual);
+            cad.setLast_login(data_atual);
             return new ResponseEntity<String>(gson.toJson(repository.save(cad)), HttpStatus.OK);
         }
     }

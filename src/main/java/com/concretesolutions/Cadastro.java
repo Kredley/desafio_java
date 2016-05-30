@@ -5,6 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Column;
+import java.util.Date;
 
 @Entity
 public class Cadastro {
@@ -18,9 +19,9 @@ public class Cadastro {
     private String email;
     private String phones; //precisa ser um vetor depois
 
-    private String created; //precisa ser data
-    private String modified; //precisa ser data
-    private String last_login; //precisa ser data
+    private Date created; //precisa ser data
+    private Date modified; //precisa ser data
+    private Date last_login; //precisa ser data
 
     private String token; //precisa ser persistido???
 
@@ -67,32 +68,32 @@ public class Cadastro {
 	}
 
 
-	public String getCreated() {
+	public Date getCreated() {
 		return created;
 	}
 
 
-	public void setCreated(String created) {
+	public void setCreated(Date created) {
 		this.created = created;
 	}
 
 
-	public String getModified() {
+	public Date getModified() {
 		return modified;
 	}
 
 
-	public void setModified(String modified) {
+	public void setModified(Date modified) {
 		this.modified = modified;
 	}
 
 
-	public String getLast_login() {
+	public Date getLast_login() {
 		return last_login;
 	}
 
 
-	public void setLast_login(String last_login) {
+	public void setLast_login(Date last_login) {
 		this.last_login = last_login;
 	}
 
