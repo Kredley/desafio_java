@@ -20,14 +20,16 @@ public class Cadastro {
     @Column(unique = true)
     private String email;
 
+    private String password;
+
     @OneToMany(mappedBy = "cadastro", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CadastroPhone> phones = new ArrayList<CadastroPhone>();
 
-    private Date created; //precisa ser data
-    private Date modified; //precisa ser data
-    private Date last_login; //precisa ser data
+    private Date created;
+    private Date modified;
+    private Date last_login;
 
-    private String token; //precisa ser persistido???
+    private String token;
 
 
 
@@ -60,6 +62,17 @@ public class Cadastro {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+
+    public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 
 
 	public List<CadastroPhone> getPhones() {
