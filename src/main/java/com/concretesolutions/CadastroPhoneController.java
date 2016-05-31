@@ -17,9 +17,4 @@ public class CadastroPhoneController {
     public CadastroPhoneController(CadastroPhoneRepository repository) {
         this.repository = repository;
     }
-
-    @RequestMapping(value = "/list_phones", method = RequestMethod.GET)
-    ResponseEntity<String> listar() {
-        return new ResponseEntity<String>(repository.findAll().toString(), HttpStatus.OK);
-    }
 }
