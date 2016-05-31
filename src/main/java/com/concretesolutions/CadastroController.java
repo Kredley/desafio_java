@@ -3,18 +3,11 @@ package com.concretesolutions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.*;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
-import java.util.List;
 
-
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.impl.crypto.MacProvider;
-import java.security.Key;
 
 
 @RestController
@@ -27,7 +20,7 @@ public class CadastroController {
     }
 
     @RequestMapping(value = "/cadastro", method = RequestMethod.POST)
-    ResponseEntity<String> cadastrar(@RequestBody Cadastro cad) {
+    ResponseEntity<String> cadastro(@RequestBody Cadastro cad) {
 
         if (repository.countByEmail(cad.getEmail()) == 0) {
             // caso o email não exista, retornar status 200 - OK
@@ -35,7 +28,7 @@ public class CadastroController {
             cad.setCreated(data_atual);
             cad.setModified(data_atual);
             cad.setLast_login(data_atual);
-            cad.setToken(Jwts.builder().setSubject("Joe").setExpiration(new Date((new Date()).getTime() + 30 * DesafioApplication.UM_MINUTO_EM_MILISEGUNDOS)).signWith(SignatureAlgorithm.HS512, DesafioApplication.SECRET_KEY).compact());
+            cad.setToken(Token.generateToken(cad.getEmail()));
 
             //referencia o objeto cad para cada um dos objetos de CadastroPhone do cad
             for (CadastroPhone ph: cad.getPhones()) {
@@ -52,13 +45,17 @@ public class CadastroController {
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    ResponseEntity<String> autenticar(@RequestBody Cadastro cad) {
+    ResponseEntity<String> login(@RequestBody Cadastro cad) {
         Cadastro cadBD;
 
+        // verifica se o email e a senha não são nulos
         if (cad.getEmail() != null && cad.getPassword() != null) {
+            // no caso de não serem nulos, procura o email no BD e compara as senhas
             cadBD = repository.findByEmail(cad.getEmail());
-            if (cadBD.getEmail() == cad.getEmail() && cadBD.getPassword() != cad.getPassword()) {
-                cadBD.setToken(Jwts.builder().setSubject(cadBD.getEmail()).setExpiration(new Date((new Date()).getTime() + 30 * DesafioApplication.UM_MINUTO_EM_MILISEGUNDOS)).signWith(SignatureAlgorithm.HS512, DesafioApplication.SECRET_KEY).compact());
+            if (cadBD.getEmail().equals(cad.getEmail()) && cadBD.getPassword().equals(cad.getPassword())) {
+                // caso sejam iguais, gera um token e retorna o usuário
+                cadBD.setToken(Token.generateToken(cadBD.getEmail()));
+                repository.save(cadBD);
                 return new ResponseEntity<String>(cadBD.toString(), HttpStatus.OK);
             }
             else {
@@ -72,9 +69,40 @@ public class CadastroController {
     }
 
 
+    @RequestMapping(value = "/perfil/{id}", method = RequestMethod.GET)
+    ResponseEntity<String> perfil(@RequestHeader(value="Authorization", required=false) String auth, @PathVariable Long id) {
+        if (auth != null) {
+            String auth_parts[] = auth.trim().split("\\s+");
+            if (auth_parts.length > 0) {
+                String token = auth_parts[auth_parts.length - 1];
+                Cadastro cadBD = repository.findOne(id);
+                if (cadBD != null) {
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    ResponseEntity<String> listar() {
-        return new ResponseEntity<String>(repository.findAll().toString(), HttpStatus.OK);
+                    // o usuário existe, então verificar se o token está correto
+                    if (cadBD.getToken().equals(token)) {
+                        // verifica se o token expirou
+                        if (Token.isNotExpired(token)) {
+                            return new ResponseEntity<String>(cadBD.toString(), HttpStatus.OK);
+                        } else {
+                            return new ResponseEntity<String>(new MensagemRetorno("Sessão inválida").toString(), HttpStatus.UNAUTHORIZED);
+                        }
+
+                    } else {
+                        // token inválido
+                        return new ResponseEntity<String>(new MensagemRetorno("Não autorizado").toString(), HttpStatus.UNAUTHORIZED);
+                    }
+                } else {
+                    // id de usuário inexistente
+                    return new ResponseEntity<String>(new MensagemRetorno("Não autorizado").toString(), HttpStatus.UNAUTHORIZED);
+                }
+            } else {
+                // header presente, mas em branco
+                return new ResponseEntity<String>(new MensagemRetorno("Não autorizado").toString(), HttpStatus.UNAUTHORIZED);
+            }
+        }
+        else {
+            // se o token não estiver presente no header, retornar o erro apropriado
+            return new ResponseEntity<String>(new MensagemRetorno("Não autorizado").toString(), HttpStatus.UNAUTHORIZED);
+        }
     }
 }

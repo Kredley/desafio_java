@@ -75,6 +75,8 @@ public class Cadastro {
 
 
 
+
+
 	public List<CadastroPhone> getPhones() {
 		return phones;
 	}
