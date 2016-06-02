@@ -23,6 +23,11 @@ public class CadastroController {
     @RequestMapping(value = "/cadastro", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<String> cadastro(@RequestBody Cadastro cad) {
 
+        // validação simples dos principais campos do cadastro
+        if (cad.getName() == null || cad.getEmail() == null || cad.getPassword() == null) {
+            return new ResponseEntity<String>(new MensagemRetorno("Campos name, email e password não podem ser nulos").toString(), HttpStatus.BAD_REQUEST);
+        }
+
         if (repository.countByEmail(cad.getEmail()) == 0) {
             // caso o email não exista, retornar status 200 - OK
             Date data_atual = new Date();
