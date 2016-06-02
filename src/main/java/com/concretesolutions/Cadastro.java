@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 @Entity
@@ -25,8 +26,11 @@ public class Cadastro {
     @OneToMany(mappedBy = "cadastro", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CadastroPhone> phones = new ArrayList<CadastroPhone>();
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/YYY HH:mm:ss", timezone="America/Sao_Paulo", locale="br")
     private Date created;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/YYY HH:mm:ss", timezone="America/Sao_Paulo", locale="br")
     private Date modified;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/YYY HH:mm:ss", timezone="America/Sao_Paulo", locale="br")
     private Date last_login;
 
     private String token;

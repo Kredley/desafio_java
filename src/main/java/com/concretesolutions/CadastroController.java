@@ -56,6 +56,7 @@ public class CadastroController {
             if (cadBD.getEmail().equals(cad.getEmail()) && cadBD.getPassword().equals(cad.getPassword())) {
                 // caso sejam iguais, gera um token e retorna o usuário
                 cadBD.setToken(Token.generateToken(cadBD.getEmail()));
+                cadBD.setLast_login(new Date());
                 repository.save(cadBD);
                 return new ResponseEntity<String>(cadBD.toString(), HttpStatus.OK);
             }
@@ -82,7 +83,13 @@ public class CadastroController {
                     // o usuário existe, então verificar se o token está correto
                     if (cadBD.getToken().equals(token)) {
                         // verifica se o token expirou
+                        // aqui poderia ter sido verificada a data do último login,
+                        // mas faz mais sentido olhar a validade do token
                         if (Token.isNotExpired(token)) {
+                            // aqui, caso seja feita alguma alteração no perfil do usuário
+                            // basta descomentar as seguintes linhas:
+                            // cadBD.setModified(new Date());
+                            // repository.save(cadBD);
                             return new ResponseEntity<String>(cadBD.toString(), HttpStatus.OK);
                         } else {
                             return new ResponseEntity<String>(new MensagemRetorno("Sessão inválida").toString(), HttpStatus.UNAUTHORIZED);

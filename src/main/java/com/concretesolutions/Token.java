@@ -18,8 +18,8 @@ import java.util.Date;
  */
 public final class Token {
     public final static long UM_MINUTO_EM_MILISEGUNDOS = 60000;//milisegundos
-    // public final static long VALIDADE_TOKEN = UM_MINUTO_EM_MILISEGUNDOS * 30;
-    public final static long VALIDADE_TOKEN = 20000;
+    public final static long VALIDADE_TOKEN = UM_MINUTO_EM_MILISEGUNDOS * 30;
+    // public final static long VALIDADE_TOKEN = 20000;
     public final static String SECRET_KEY = "4W966UpRB5P7e2u5z8UE2YNf0AlT974705O8J68rV46ea433X~71o25R9N5d925KlOH1e4^94229iH6Nf741oH32M2P8U49N48NI";
 
 
