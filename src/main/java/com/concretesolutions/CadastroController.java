@@ -2,6 +2,7 @@ package com.concretesolutions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,7 @@ public class CadastroController {
         this.repository = repository;
     }
 
-    @RequestMapping(value = "/cadastro", method = RequestMethod.POST)
+    @RequestMapping(value = "/cadastro", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<String> cadastro(@RequestBody Cadastro cad) {
 
         if (repository.countByEmail(cad.getEmail()) == 0) {
@@ -44,7 +45,7 @@ public class CadastroController {
 
 
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<String> login(@RequestBody Cadastro cad) {
         Cadastro cadBD;
 
@@ -69,7 +70,7 @@ public class CadastroController {
     }
 
 
-    @RequestMapping(value = "/perfil/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/perfil/{id}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<String> perfil(@RequestHeader(value="Authorization", required=false) String auth, @PathVariable Long id) {
         if (auth != null) {
             String auth_parts[] = auth.trim().split("\\s+");
