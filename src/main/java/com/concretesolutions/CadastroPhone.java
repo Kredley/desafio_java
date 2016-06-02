@@ -31,44 +31,44 @@ public class CadastroPhone {
         this.setNumber(number);
     }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 
-	public Cadastro getCadastro() {
-		return cadastro;
-	}
+    public Cadastro getCadastro() {
+        return cadastro;
+    }
 
 
-	public void setCadastro(Cadastro cadastro) {
-		this.cadastro = cadastro;
-	}
+    public void setCadastro(Cadastro cadastro) {
+        this.cadastro = cadastro;
+    }
 
 
-	public String getDdd() {
-		return ddd;
-	}
+    public String getDdd() {
+        return ddd;
+    }
 
 
-	public void setDdd(String ddd) {
-		this.ddd = ddd;
-	}
+    public void setDdd(String ddd) {
+        this.ddd = ddd;
+    }
 
 
-	public String getNumber() {
-		return number;
-	}
+    public String getNumber() {
+        return number;
+    }
 
 
-	public void setNumber(String number) {
-		this.number = number;
-	}
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
