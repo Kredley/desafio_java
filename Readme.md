@@ -23,7 +23,8 @@
 * **Dados da requisição**
 
   No body da requisição o payload precisa ser um json no seguinte formato:
-  ```json
+  ```
+  json
     {
         "name": "João da Silva",
         "email": "joao@silva.org",
@@ -43,7 +44,8 @@
 
   * **Código:** 200 <br />
     **Conteúdo:**
-    ```json
+    ```
+    json
     {
         "id": 1,
         "name": "João da Silva",
@@ -68,7 +70,8 @@
   * **Código:** 409 CONFLICT <br />
     **Conteúdo:**
 
-    ```json
+    ```
+    json
     {
         "mensagem": "E-mail já existente"
     }
@@ -90,7 +93,8 @@
 * **Dados da requisição**
 
   No body da requisição o payload precisa ser um json no seguinte formato:
-  ```json
+  ```
+  json
     {
         "email": "joao@silva.org",
         "password": "hunter2"
@@ -103,7 +107,8 @@
 
   * **Código:** 200 <br />
     **Conteúdo:**
-    ```json
+    ```
+    json
     {
         "id": 1,
         "name": "João da Silva",
@@ -128,7 +133,8 @@
   * **Código:** 401 UNAUTHORIZED <br />
     **Conteúdo:**
 
-    ```json
+    ```
+    json
     {
         "mensagem": "Usuário e/ou senha inválidos"
     }
@@ -164,7 +170,8 @@
 
   * **Código:** 200 <br />
     **Conteúdo:**
-    ```json
+    ```
+    json
     {
         "id": 1,
         "name": "João da Silva",
@@ -189,7 +196,8 @@
   * **Código:** 401 UNAUTHORIZED <br />
     **Conteúdo:**
 
-    ```json
+    ```
+    json
     {
         "mensagem": "Não autorizado"
     }
